@@ -1,15 +1,25 @@
 package com.sap.ttt;
 
-public abstract class Player {
-    protected char symbol;
+public class Player {
+    private String name;
+    private String symbol;
 
-    public Player(char symbol) {
+    // constructor
+    public Player(String name, String symbol) {
+        this.name = name;
         this.symbol = symbol;
+
     }
 
-    public char getSymbol() {
+
+    // getters
+    public String getName() {
+        return name;
+    }
+
+    public String getSymbol() {
         return symbol;
-    }
 
-    public abstract boolean isComputer();
+    }
 }
+
