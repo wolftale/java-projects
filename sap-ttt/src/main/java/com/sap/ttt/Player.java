@@ -1,25 +1,21 @@
 package com.sap.ttt;
 
 public class Player {
-    private String name;
-    private String symbol;
 
-    // constructor
-    public Player(String name, String symbol) {
+    private String name;
+    private char symbol;
+
+    public Player(String name, char symbol) {
         this.name = name;
         this.symbol = symbol;
-
     }
 
-
-    // getters
     public String getName() {
         return name;
     }
 
-    public String getSymbol() {
+    public char getSymbol() {
         return symbol;
-
     }
 }
 
