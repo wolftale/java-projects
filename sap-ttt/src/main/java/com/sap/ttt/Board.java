@@ -1,128 +1,76 @@
 package com.sap.ttt;
 
-public class Board {
+import java.util.Scanner;
 
-    private int size;
-    private char[][] cells;
+public abstract class Board {
+    protected char[][] board;
+    public abstract boolean checkWinner();
+    public abstract int getBoardSize();
+    private Scanner scanner;
 
-    public Board(int size) {
-        this.size = size;
-        cells = new char[size][size];
-        initializeBoard();
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-        cells = new char[size][size];
-        initializeBoard();
-    }
-
-    // initialize the board with all empty cells
-    public void initializeBoard() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                cells[i][j] = ' ';
+    public void startBoard() {
+        board = new char[getBoardSize()][getBoardSize()];
+        for (int row = 0; row < getBoardSize(); row++) {
+            for (int col = 0; col < getBoardSize(); col++) {
+                board[row][col] = ' ';
             }
         }
     }
 
-    // check if the cell is empty
-    public boolean isCellEmpty(int row, int col) {
-        return cells[row][col] == ' ';
-    }
+    public void displayBoard() {
+        System.out.println(getHeader());
+        System.out.println(getHorizontalLine());
 
-    // check if the cell is occupied
-    public boolean isCellOccupied(int row, int col) {
-        return cells[row][col] != ' ';
-    }
-
-    // place the symbol in the cell
-    public void placeSymbol(int row, int col, char symbol) {
-        cells[row][col] = symbol;
-    }
-
-    // isWinningMove
-    public boolean isWinningMove(int row, int col, char symbol) {
-        return checkRows(row, col, symbol) || checkColumns(row, col, symbol) || checkDiagonals(row, col, symbol);
-    }
-
-    // check if the row is winning
-    public boolean checkRows(int row, int col, char symbol) {
-        for (int i = 0; i < size; i++) {
-            if (cells[row][i] != symbol) {
-                return false;
+        for (int row = 0; row < getBoardSize(); row++) {
+            String rowNum = String.format("%2d", row + 1); // Convert row number to a two-character string
+            System.out.print(rowNum + " | ");
+            for (int col = 0; col < getBoardSize(); col++) {
+                char letter = (char) ('A' + col); // Convert column index to a letter
+                System.out.print(board[row][col] + " | ");
             }
-        }
-        return true;
-    }
-
-    // check if the column is winning
-    public boolean checkColumns(int row, int col, char symbol) {
-        for (int i = 0; i < size; i++) {
-            if (cells[i][col] != symbol) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    // check if the diagonal is winning
-    public boolean checkDiagonals(int row, int col, char symbol) {
-        if (row == col) {
-            for (int i = 0; i < size; i++) {
-                if (cells[i][i] != symbol) {
-                    return false;
-                }
-            }
-            return true;
-        } else if (row + col == size - 1) {
-            for (int i = 0; i < size; i++) {
-                if (cells[i][size - i - 1] != symbol) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return false;
+            System.out.println("\n" + getHorizontalLine());
         }
     }
 
-    // check if the board is full
+    // Get header
+    public String getHeader() {
+        StringBuilder header = new StringBuilder("     ");
+        for (int col = 0; col < getBoardSize(); col++) {
+            char letter = (char) ('A' + col);
+            header.append(letter).append("   ");
+        }
+        return header.toString();
+    }
+
+    // Get horizontal line
+    public String getHorizontalLine() {
+        StringBuilder line = new StringBuilder("   +");
+        for (int col = 0; col < getBoardSize(); col++) {
+            line.append("---+");
+        }
+        return line.toString();
+    }
+
+    public boolean isMoveValid(int move) {
+        int row = (move - 1) / getBoardSize();
+        int col = (move - 1) % getBoardSize();
+        return (move >= 1 && move <= getBoardSize() * getBoardSize() && board[row][col] == ' ');
+    }
+
+    public void makeMove(int move, char symbol) {
+        int row = (move - 1) / getBoardSize();
+        int col = (move - 1) % getBoardSize();
+        board[row][col] = symbol;
+    }
+
     public boolean isBoardFull() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (cells[i][j] == ' ') {
+        for (int row = 0; row < getBoardSize(); row++) {
+            for (int col = 0; col < getBoardSize(); col++) {
+                if (board[row][col] == ' ') {
                     return false;
                 }
             }
         }
         return true;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    // print the board
-    public void printBoard() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                System.out.print(cells[i][j] + " ");
-                if (j != size - 1) {
-                    System.out.print("|");
-                }
-            }
-            System.out.println();
-            if (i != size - 1) {
-                for (int j = 0; j < size; j++) {
-                    System.out.print("--");
-                    if (j != size - 1) {
-                        System.out.print(" ");
-                    }
-                }
-                System.out.println();
-            }
-        }
     }
 }
