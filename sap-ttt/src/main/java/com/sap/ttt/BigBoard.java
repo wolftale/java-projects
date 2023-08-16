@@ -17,7 +17,7 @@ public class BigBoard extends Board {
                         && board[row][col + 1] == board[row][col + 2]
                         && board[row][col + 2] == board[row][col + 3]
                         && board[row][col + 3] == board[row][col + 4]) {
-                    return true;
+                    return true; // Found a winning sequence
                 }
             }
         }
@@ -28,7 +28,7 @@ public class BigBoard extends Board {
                         && board[row + 1][col] == board[row + 2][col]
                         && board[row + 2][col] == board[row + 3][col]
                         && board[row + 3][col] == board[row + 4][col]) {
-                    return true;
+                    return true; // Found a winning sequence
                 }
             }
         }
@@ -39,7 +39,7 @@ public class BigBoard extends Board {
                         && board[row + 1][col + 1] == board[row + 2][col + 2]
                         && board[row + 2][col + 2] == board[row + 3][col + 3]
                         && board[row + 3][col + 3] == board[row + 4][col + 4]) {
-                    return true;
+                    return true; // Found a winning sequence
                 }
             }
         }
@@ -50,10 +50,34 @@ public class BigBoard extends Board {
                         && board[row + 1][col - 1] == board[row + 2][col - 2]
                         && board[row + 2][col - 2] == board[row + 3][col - 3]
                         && board[row + 3][col - 3] == board[row + 4][col - 4]) {
-                    return true;
+                    return true; // Found a winning sequence
                 }
             }
         }
-        return false;
+
+        // Check for a draw
+        boolean isDraw = true;
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                if (board[row][col] == ' ') {
+                    isDraw = false; // Found an empty position, game is not a draw
+                    break;
+                }
+            }
+            if (!isDraw) {
+                break;
+            }
+        }
+
+        if (isDraw) {
+            return true; // All positions are filled, and no winner
+        }
+
+        return false; // Neither a win nor a draw
+    }
+
+    // New method for testing purposes
+    public void setBoard(char[][] newBoard) {
+        board = newBoard;
     }
 }

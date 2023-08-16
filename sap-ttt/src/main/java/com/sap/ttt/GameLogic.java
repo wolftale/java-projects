@@ -3,11 +3,16 @@ package com.sap.ttt;
 import java.util.Scanner;
 
 public class GameLogic {
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
     private Player player1;
     private Player player2;
     private Board board;
-    private boolean playAgain = true;
+    private boolean playAgain;
+
+    public GameLogic() {
+        scanner = new Scanner(System.in);
+        playAgain = true;
+    }
 
     public void run() {
         GameDisplay.displayWelcomeMessage();
@@ -18,12 +23,15 @@ public class GameLogic {
             handlePlayAgain();
         }
 
+        // Display goodbye message after the play again loop
         GameDisplay.displayGoodbyeMessage();
     }
 
     private void setupGame() {
+        // Ask for player's name only once
         GameDisplay.displayPlayerNamePrompt();
         String playerName1 = scanner.nextLine();
+        String playerName2 = null;
 
         int gameType = GameDisplay.displayGameTypePrompt();
 
@@ -32,8 +40,10 @@ public class GameLogic {
             player2 = new ComputerPlayer('O', "Computer", board);
         } else if (gameType == 2) {
             player2 = new HumanPlayer('O', playerName1, board);
-            GameDisplay.displayPlayer2NamePrompt();
-            String playerName2 = scanner.nextLine();
+            if (playerName2 == null) {
+                GameDisplay.displayPlayer2NamePrompt();
+                playerName2 = scanner.nextLine();
+            }
             player1 = new HumanPlayer('X', playerName2, board);
         } else {
             GameDisplay.displayWrongChoicePrompt();
@@ -59,6 +69,7 @@ public class GameLogic {
 
         while (true) {
             board.displayBoard();
+            GameDisplay.displayPlayerTurnMessage(currentPlayer.getName());
             int move = currentPlayer.getMove(board);
             board.makeMove(move, currentPlayer.getSymbol());
 
@@ -86,10 +97,13 @@ public class GameLogic {
         } else {
             GameDisplay.displayWrongChoicePrompt();
             handlePlayAgain();
+            return;
         }
 
+        // Close the scanner before displaying the goodbye message
         if (!playAgain) {
-            scanner.close(); // Close the scanner before displaying the goodbye message
+            scanner.close();
         }
     }
 }
+

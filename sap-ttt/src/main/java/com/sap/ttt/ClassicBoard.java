@@ -36,4 +36,9 @@ public class ClassicBoard extends Board {
 
         return false;
     }
+
+    // New method for testing purposes
+    public void setBoard(char[][] newBoard) {
+        board = newBoard;
+    }
 }

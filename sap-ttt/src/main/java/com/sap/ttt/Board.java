@@ -1,12 +1,12 @@
 package com.sap.ttt;
 
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public abstract class Board {
     protected char[][] board;
     public abstract boolean checkWinner();
     public abstract int getBoardSize();
-    private Scanner scanner;
+//    private Scanner scanner;
 
     public void startBoard() {
         board = new char[getBoardSize()][getBoardSize()];
@@ -52,15 +52,22 @@ public abstract class Board {
     }
 
     public boolean isMoveValid(int move) {
-        int row = (move - 1) / getBoardSize();
-        int col = (move - 1) % getBoardSize();
-        return (move >= 1 && move <= getBoardSize() * getBoardSize() && board[row][col] == ' ');
+        if (move >= 1 && move <= getBoardSize() * getBoardSize()) {
+            int row = (move - 1) / getBoardSize();
+            int col = (move - 1) % getBoardSize();
+            return (move >= 1 && move <= getBoardSize() * getBoardSize() && board[row][col] == ' ');
+        } else {
+            return false;
+        }
     }
 
     public void makeMove(int move, char symbol) {
-        int row = (move - 1) / getBoardSize();
-        int col = (move - 1) % getBoardSize();
-        board[row][col] = symbol;
+        if (move >= 1 && move <= getBoardSize() * getBoardSize()) {
+            int row = (move - 1) / getBoardSize();
+            int col = (move - 1) % getBoardSize();
+            board[row][col] = symbol;
+
+        }
     }
 
     public boolean isBoardFull() {

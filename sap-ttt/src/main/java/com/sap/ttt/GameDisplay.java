@@ -17,7 +17,12 @@ public class GameDisplay {
 
     // display player 2 name prompt
     public static void displayPlayer2NamePrompt() {
-        System.out.println("Please enter your name: ");
+        System.out.println("Please enter the name of the second player: ");
+    }
+
+    // display player turn message
+    public static void displayPlayerTurnMessage(String playerName) {
+        System.out.println(playerName + "'s turn:");
     }
 
     public static int displayGameTypePrompt() {
